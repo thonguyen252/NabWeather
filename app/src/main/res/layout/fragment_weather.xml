@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="weatherAdapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
+        <variable
+            name="viewModel"
+            type="nguyen.exam.nabweather.ui.fragments.weather.WeatherFragmentViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <EditText
+            android:id="@+id/etCityKeyword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onTextChanged="@{viewModel::onKeywordChanged}"
+            android:padding="@dimen/space_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Weather" />
+            android:layout_height="wrap_content"
+            android:adapter="@{weatherAdapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/etCityKeyword" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

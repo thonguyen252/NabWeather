@@ -1,7 +1,9 @@
 package nguyen.exam.nabweather.ui.fragments.weather
 
+import androidx.fragment.app.viewModels
 import nguyen.exam.nabweather.R
 import nguyen.exam.nabweather.databinding.FragmentWeatherBinding
+import nguyen.exam.nabweather.ui.adapters.weather.WeatherInDayRecyclerViewAdapter
 import nguyen.exam.nabweather.ui.fragments.BaseFragment
 
 /**
@@ -11,9 +13,19 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     override val layoutResourceId = R.layout.fragment_weather
 
+    private val viewModel: WeatherFragmentViewModel by viewModels()
+
+    private val adapter by lazy { WeatherInDayRecyclerViewAdapter() }
+
     override fun setupView() {
+        binding.viewModel = viewModel
+        binding.weatherAdapter = adapter
     }
 
     override fun setupViewModel() {
+        viewModel.weatherInDay.observe(this) {
+            adapter.setData(it)
+            adapter.notifyDataSetChanged()
+        }
     }
 }

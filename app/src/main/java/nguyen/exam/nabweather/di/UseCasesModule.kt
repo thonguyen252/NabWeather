@@ -5,20 +5,22 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nguyen.exam.nabweather.repositories.weather.WeatherRepository
-import nguyen.exam.nabweather.repositories.weather.WeatherRepositoryImpl
-import nguyen.exam.nabweather.services.WeatherServices
+import nguyen.exam.nabweather.usecases.WeatherUseCases
+import nguyen.exam.nabweather.usecases.WeatherUserCasesImpl
 import javax.inject.Singleton
 
 /**
- * Create by Nguyen on 02/06/2022
+ * Create by Nguyen on 03/06/2022
  */
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoriesModule {
+object UseCasesModule {
 
     @Provides
     @Singleton
-    fun provideWeatherRepository(service: WeatherServices): WeatherRepository {
-        return WeatherRepositoryImpl(service)
+    fun provideWeatherUseCases(
+        repo: WeatherRepository
+    ) : WeatherUseCases {
+        return WeatherUserCasesImpl(repo)
     }
 }

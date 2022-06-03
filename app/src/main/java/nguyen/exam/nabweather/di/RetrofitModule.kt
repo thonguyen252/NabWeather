@@ -1,6 +1,6 @@
 package nguyen.exam.nabweather.di
 
-import com.google.gson.Gson
+import com.google.gson.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +11,8 @@ import nguyen.exam.nabweather.services.WeatherServices
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -32,7 +34,9 @@ object RetrofitModule {
     fun profileWeatherRetrofit(
         okHttpClient: OkHttpClient
     ): Retrofit {
-        val gson = Gson()
+        val gson = GsonBuilder().apply {
+            registerTypeAdapter(Date::class.java, WDateTypeAdapter)
+        }.create()
         val builder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
         return builder.baseUrl(BuildConfig.WEATHER_BASE_URL).client(okHttpClient).build()
@@ -46,5 +50,31 @@ object RetrofitModule {
             .readTimeout(AppConfig.API_TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(AppConfig.API_TIME_OUT, TimeUnit.SECONDS)
             .build()
+    }
+}
+
+object WDateTypeAdapter : JsonDeserializer<Date>, JsonSerializer<Date> {
+
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): Date? {
+        return try {
+            json?.asLong?.let {
+                Date().apply { time = it }
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+    }
+
+    override fun serialize(
+        src: Date,
+        typeOfSrc: Type?,
+        context: JsonSerializationContext?
+    ): JsonElement {
+        return JsonPrimitive(src.time.div(1000))
     }
 }
