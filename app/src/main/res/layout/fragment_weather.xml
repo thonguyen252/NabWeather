@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,9 +12,13 @@
         <variable
             name="viewModel"
             type="nguyen.exam.nabweather.ui.fragments.weather.WeatherFragmentViewModel" />
+
+        <variable
+            name="errorMessage"
+            type="String" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
@@ -22,6 +28,8 @@
             android:id="@+id/etCityKeyword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:hint="@string/hint_city"
+            android:inputType="text"
             android:lines="1"
             android:onTextChanged="@{viewModel::onKeywordChanged}"
             android:paddingHorizontal="@dimen/space_base_grid"
@@ -30,13 +38,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{errorMessage}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etCityKeyword"
+            app:visibleBinding="@{errorMessage != null}"
+            tools:text="Error text" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvWeather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_base_grid"
             android:adapter="@{weatherAdapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/etCityKeyword" />
+            app:layout_constraintTop_toBottomOf="@id/tvError"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_weather_in_day" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

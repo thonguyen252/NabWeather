@@ -1,14 +1,23 @@
 package nguyen.exam.nabweather.di
 
+import android.accounts.NetworkErrorException
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import com.google.gson.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nguyen.exam.nabweather.BuildConfig
+import nguyen.exam.nabweather.WeatherApplication
 import nguyen.exam.nabweather.config.AppConfig
 import nguyen.exam.nabweather.services.WeatherServices
+import nguyen.exam.nabweather.services.exeptions.NetworkException
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -53,13 +62,64 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideOkHTTP(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideNetworkInterceptor(): Interceptor {
+        return NetworkInterceptor
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHTTP(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        networkInterceptor: Interceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(networkInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(AppConfig.API_TIME_OUT, TimeUnit.SECONDS)
             .readTimeout(AppConfig.API_TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(AppConfig.API_TIME_OUT, TimeUnit.SECONDS)
             .build()
+    }
+}
+
+object NetworkInterceptor : Interceptor {
+
+    override fun intercept(chain: Interceptor.Chain): Response {
+
+        val connectManager =
+            WeatherApplication.globalContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+
+        connectManager?.run {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getNetworkCapabilities(activeNetwork)?.run {
+                    when {
+                        hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                        hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                        hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                        else -> false
+                    }.also {
+                        if (!it) throw NetworkException()
+                    }
+                } ?: run {
+                    throw NetworkException()
+                }
+            } else {
+                activeNetworkInfo?.run {
+                    when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_VPN -> true
+                        else -> false
+                    }.also {
+                        if (!it) throw NetworkException()
+                    }
+                } ?: run {
+                    throw NetworkException()
+                }
+            }
+        }
+
+        return chain.proceed(chain.request())
     }
 }
 

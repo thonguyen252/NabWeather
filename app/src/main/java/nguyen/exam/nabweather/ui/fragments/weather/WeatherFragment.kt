@@ -36,5 +36,8 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
             adapter.setData(it)
             adapter.notifyDataSetChanged()
         }
+        viewModel.apiErrorLiveData.observe(this) {
+            binding.errorMessage = it?.errorMessage
+        }
     }
 }

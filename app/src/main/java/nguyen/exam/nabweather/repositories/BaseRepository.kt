@@ -1,8 +1,11 @@
 package nguyen.exam.nabweather.repositories
 
+import android.util.Log
+import nguyen.exam.nabweather.services.exeptions.NetworkException
 import nguyen.exam.nabweather.services.exeptions.ResponseCode
 import nguyen.exam.nabweather.services.responses.APIResult
 import nguyen.exam.nabweather.services.responses.BaseWeatherAPIResponse
+import java.net.UnknownHostException
 
 /**
  * Create by Nguyen on 03/06/2022
@@ -13,13 +16,20 @@ abstract class BaseRepository {
         return try {
             val response = caller.invoke()
             if (response.cod == ResponseCode.SUCCESS) {
-                APIResult<R>(true, null, null, response)
+                APIResult(true, null, null, response)
             } else {
                 APIResult(false, response.cod, null, null)
             }
         } catch (exception: Exception) {
-            // Todo check type of exception
-            APIResult(false, null, exception.message, null)
+            Log.e("API-Error", exception.toString())
+            return when (exception) {
+                is UnknownHostException ->
+                    APIResult(false, null, exception.message, null)
+                is NetworkException ->
+                    APIResult(false, null, "Network error", null)
+                else ->
+                    APIResult(false, null, exception.message, null)
+            }
         }
     }
 }
