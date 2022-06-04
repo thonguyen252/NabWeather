@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="nguyen.exam.nabweather.ui.utils.DateFormatter" />
 
         <variable
             name="data"
             type="nguyen.exam.nabweather.models.WeatherInDay" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_base_grid">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="@{String.format(@string/date, DateFormatter.INSTANCE.formatWDate(data.dt))}"
+            tools:text="Date: Sat, 04 Jun 2022" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="@{String.format(@string/average_temperature, data.temp != null ? Double.toString(data.temp.eve) : @string/NA)}"
+            tools:text="Average temperature: 30&#176;C" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="@{String.format(@string/pressure, data.pressure)}"
+            tools:text="Pressure: 1000" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="@{String.format(@string/humidity, data.humidity)}"
+            tools:text="Humidity: 10%" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="@{String.format(@string/description, !data.weather.empty ? data.weather[0].description : @string/NA)}"
+            tools:text="Description: snow" />
+    </LinearLayout>
 </layout>

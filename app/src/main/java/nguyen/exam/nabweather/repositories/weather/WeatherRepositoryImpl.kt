@@ -8,10 +8,10 @@ import nguyen.exam.nabweather.services.responses.weather.WeatherResponse
 /**
  * Create by Nguyen on 02/06/2022
  */
-class WeatherRepositoryImpl(val service: WeatherServices) : WeatherRepository, BaseRepository() {
+class WeatherRepositoryImpl(private val service: WeatherServices) : WeatherRepository, BaseRepository() {
 
     override suspend fun getWeather(keyword: String): APIResult<WeatherResponse> {
-        return safeApiCall { service.getWeather(keyword) }
+        return safeApiCall { service.getWeather(keyword = keyword) }
     }
 
 }

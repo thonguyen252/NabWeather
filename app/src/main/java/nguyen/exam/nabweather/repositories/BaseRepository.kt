@@ -13,12 +13,13 @@ abstract class BaseRepository {
         return try {
             val response = caller.invoke()
             if (response.cod == ResponseCode.SUCCESS) {
-                APIResult<R>(true, null, response)
+                APIResult<R>(true, null, null, response)
             } else {
-                APIResult(false, response.message, null)
+                APIResult(false, response.cod, null, null)
             }
         } catch (exception: Exception) {
-            APIResult(false, exception.message, null)
+            // Todo check type of exception
+            APIResult(false, null, exception.message, null)
         }
     }
 }

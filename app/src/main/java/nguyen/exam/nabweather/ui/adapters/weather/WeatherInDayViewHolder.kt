@@ -7,10 +7,10 @@ import nguyen.exam.nabweather.ui.adapters.BaseRecyclerViewHolder
 /**
  * Create by Nguyen on 03/06/2022
  */
-class WeatherInDayViewHolder(binding: ItemWeatherInDayBinding) :
+class WeatherInDayViewHolder(override val binding: ItemWeatherInDayBinding) :
     BaseRecyclerViewHolder<WeatherInDay>(binding) {
 
     override fun bindData(data: WeatherInDay) {
-
+        binding.data = data
     }
 }

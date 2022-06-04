@@ -2,7 +2,7 @@ package nguyen.exam.nabweather.ui.fragments.weather
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.android.lifecycle.HiltViewModel
 import nguyen.exam.nabweather.models.WeatherInDay
 import nguyen.exam.nabweather.usecases.WeatherUseCases
 import nguyen.exam.nabweather.viewmodels.BaseViewModel
@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * Create by Nguyen on 03/06/2022
  */
-@ViewModelScoped
+@HiltViewModel
 class WeatherFragmentViewModel @Inject constructor(private val weatherUseCase: WeatherUseCases) :
     BaseViewModel() {
 
@@ -29,12 +29,19 @@ class WeatherFragmentViewModel @Inject constructor(private val weatherUseCase: W
             _weatherInDayLiveData.value = it
         }, onError = {
             // Handle error
+            showEmptyResult()
         })
     }
 
     fun onKeywordChanged(keyword: CharSequence, start: Int, end: Int, count: Int) {
         if (keyword.length > KEYWORD_THRESHOLD) {
             getWeather(keyword.toString())
+        } else {
+            showEmptyResult()
         }
+    }
+
+    private fun showEmptyResult() {
+        _weatherInDayLiveData.value = listOf()
     }
 }

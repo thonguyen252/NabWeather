@@ -5,5 +5,4 @@ package nguyen.exam.nabweather.models
  */
 enum class WeatherType {
     Rain,
-
 }

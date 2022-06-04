@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">NabWeather</string>
+    <string name="NA">NA</string>
+    <string name="date">Date: %s</string>
+    <string name="average_temperature">Average temperature: %s&#176;C</string>
+    <string name="pressure">Pressure: %d</string>
+    <string name="humidity">Humidity: %d%%</string>
+    <string name="description">Description: %s</string>
 </resources>
