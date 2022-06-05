@@ -10,7 +10,7 @@ object DateFormatter {
 
     fun formatWDate(date: Date?): String {
         return date?.let {
-            val pattern = "EEE, dd MMM yyy"
+            val pattern = "EEE, dd MMM yyyy"
             SimpleDateFormat(pattern, Locale.US).format(it)
         } ?: kotlin.run { "" }
     }

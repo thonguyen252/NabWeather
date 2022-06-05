@@ -13,5 +13,4 @@ class WeatherRepositoryImpl(private val service: WeatherServices) : WeatherRepos
     override suspend fun getWeather(keyword: String): APIResult<WeatherResponse> {
         return safeApiCall { service.getWeather(keyword = keyword) }
     }
-
 }

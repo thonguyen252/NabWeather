@@ -12,7 +12,10 @@ import nguyen.exam.nabweather.services.responses.APIResult
 /**
  * Create by Nguyen on 02/06/2022
  */
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel(
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+) : ViewModel() {
 
     /**
      * Execute an API call with a delay.
@@ -20,7 +23,7 @@ abstract class BaseViewModel : ViewModel() {
      * @param delay time in millisecond.
      *
      */
-    fun <T> executeDelay(
+    protected fun <T> executeDelay(
         delay: Long,
         executor: suspend () -> APIResult<T>,
         onSuccess: ((T) -> Unit)?,
@@ -32,25 +35,23 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    fun <T> execute(
+    protected fun <T> execute(
         executor: suspend () -> APIResult<T>,
         onSuccess: ((T) -> Unit)?,
         onError: ((WException) -> Unit)?
     ): Job {
         return viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            withContext(defaultDispatcher) {
                 val result = executor.invoke()
 
                 if (result.isSuccess) {
                     result.data?.let { data ->
-                        withContext(Dispatchers.Main) {
+                        withContext(mainDispatcher) {
                             onSuccess?.invoke(data)
                         }
                     }
-                }
-
-                if (!result.isSuccess) {
-                    withContext(Dispatchers.Main) {
+                } else {
+                    withContext(mainDispatcher) {
                         onError?.invoke(WException(result.code, result.message))
                     }
                 }

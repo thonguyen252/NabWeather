@@ -6,4 +6,5 @@ package nguyen.exam.nabweather.services.exeptions
 object ResponseCode {
 
     const val SUCCESS = "200"
+    const val NOT_FOUND = "404"
 }

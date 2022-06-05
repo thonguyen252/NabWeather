@@ -1,6 +1,7 @@
 package nguyen.exam.nabweather.repositories
 
 import android.util.Log
+import nguyen.exam.nabweather.services.exeptions.ErrorMessages
 import nguyen.exam.nabweather.services.exeptions.NetworkException
 import nguyen.exam.nabweather.services.exeptions.ResponseCode
 import nguyen.exam.nabweather.services.responses.APIResult
@@ -12,11 +13,11 @@ import java.net.UnknownHostException
  */
 abstract class BaseRepository {
 
-    suspend fun <R : BaseWeatherAPIResponse> safeApiCall(caller: suspend () -> R): APIResult<R> {
+    protected suspend fun <R : BaseWeatherAPIResponse> safeApiCall(caller: suspend () -> R): APIResult<R> {
         return try {
             val response = caller.invoke()
             if (response.cod == ResponseCode.SUCCESS) {
-                APIResult(true, null, null, response)
+                APIResult(true, ResponseCode.SUCCESS, null, response)
             } else {
                 APIResult(false, response.cod, null, null)
             }
@@ -26,7 +27,7 @@ abstract class BaseRepository {
                 is UnknownHostException ->
                     APIResult(false, null, exception.message, null)
                 is NetworkException ->
-                    APIResult(false, null, "Network error", null)
+                    APIResult(false, null, ErrorMessages.NETWORK_ERROR, null)
                 else ->
                     APIResult(false, null, exception.message, null)
             }
