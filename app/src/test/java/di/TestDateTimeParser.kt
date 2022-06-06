@@ -1,7 +1,7 @@
 package di
 
 import com.google.gson.JsonPrimitive
-import nguyen.exam.nabweather.di.WDateTypeAdapter
+import nguyen.exam.nabweather.services.retrofit.WDateTypeAdapter
 import org.junit.Test
 import java.util.*
 
@@ -26,7 +26,7 @@ class TestDateTimeParser {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }.time
-        val dateTime = WDateTypeAdapter.deserialize(jsonElement, null, null)
+        val dateTime = WDateTypeAdapter().deserialize(jsonElement, null, null)
         assert(expectedDateTime == dateTime)
     }
 
@@ -43,7 +43,7 @@ class TestDateTimeParser {
         }.time
 
         val expectedSerialization = JsonPrimitive(1906926560L)
-        val serialization = WDateTypeAdapter.serialize(dateTime, null, null)
+        val serialization = WDateTypeAdapter().serialize(dateTime, null, null)
         assert(expectedSerialization == serialization)
     }
 }

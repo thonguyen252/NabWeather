@@ -6,4 +6,7 @@ package nguyen.exam.nabweather.config
 object AppConfig {
 
     const val API_TIME_OUT = 15L
+
+    // Store the api key fetched from Firebase Remote Config.
+    var API_KEY: String = ""
 }

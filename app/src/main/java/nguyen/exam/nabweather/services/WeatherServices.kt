@@ -16,6 +16,5 @@ interface WeatherServices {
         @Query("units") unit: String = "metric",
         @Query("q") keyword: String,
         @Query("cnt") count: Int = 7,
-        @Query("appid") apiKey: String = "60c6fbeb4b93ac653c492ba806fc346d"
     ): WeatherResponse
 }

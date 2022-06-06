@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "725738051070",
+    "project_id": "nabweather-620f9",
+    "storage_bucket": "nabweather-620f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725738051070:android:42391ec9a8c5a687339caf",
+        "android_client_info": {
+          "package_name": "nguyen.exam.nabweather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725738051070-m9j58kp23teeg280qaq2b04tak6bjaeh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nguyen.exam.nabweather",
+            "certificate_hash": "88cc6ae6a9ca03aa029303d2da10d3285f90eee3"
+          }
+        },
+        {
+          "client_id": "725738051070-cm3iev839oo9j6mjornv7km8657aafdf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF6_LBDyWaHCedSu4XiFx1z5kMR_u6G1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725738051070-cm3iev839oo9j6mjornv7km8657aafdf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
