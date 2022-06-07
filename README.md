@@ -1,7 +1,7 @@
 # NabWeather
 
 # 1 Project
-  - NavWeather is an Android testing assessment of Nab - National Australia Bank.
+  - NavWeather is an Android testing assignment of Nab - National Australia Bank.
 
 # 2 Setting and run project
   - NavWeather was written in Android Native - Kotlin language. So running it localy need Android Studio set up. You can download and install latest Android studio here: https://developer.android.com/studio. Recommended version is Android Studio Chipmunk | 2021.2.1
