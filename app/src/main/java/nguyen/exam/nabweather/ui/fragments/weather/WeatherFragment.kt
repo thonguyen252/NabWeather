@@ -33,8 +33,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     override fun setupViewModel() {
         viewModel.weatherInDay.observe(this) {
-            adapter.setData(it)
-            adapter.notifyDataSetChanged()
+            adapter.submitData(it)
         }
         viewModel.apiErrorLiveData.observe(this) {
             binding.errorMessage = it?.errorMessage

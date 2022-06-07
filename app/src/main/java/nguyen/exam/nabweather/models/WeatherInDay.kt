@@ -20,5 +20,4 @@ data class WeatherInDay(
     val clouds: Double,
     val pop: Double,
     val rain: Double
-) {
-}
+)

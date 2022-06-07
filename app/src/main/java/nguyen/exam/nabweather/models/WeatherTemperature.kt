@@ -10,5 +10,4 @@ data class WeatherTemperature(
     val night: Double,
     val eve: Double,
     val morn: Double
-) {
-}
+)
